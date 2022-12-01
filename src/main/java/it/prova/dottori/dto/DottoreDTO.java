@@ -1,5 +1,8 @@
 package it.prova.dottori.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import it.prova.dottori.model.Dottore;
 
 public class DottoreDTO {
@@ -106,5 +109,9 @@ public class DottoreDTO {
 	public static DottoreDTO buildDTORidottoFromDottoreModel(Dottore model) {
 		return new DottoreDTO(model.getCodiceDottore(), model.getCodFiscalePazienteAttualmenteInVisita(),
 				model.getInVisita(), model.getInServizio());
+	}
+
+	public static List<DottoreDTO> createDottoreDTOListFromModelList(List<Dottore> modelListInput) {
+		return modelListInput.stream().map(d -> DottoreDTO.buildDTOFromDottoreModel(d)).collect(Collectors.toList());
 	}
 }
