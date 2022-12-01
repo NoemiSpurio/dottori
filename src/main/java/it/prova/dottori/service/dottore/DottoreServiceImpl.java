@@ -26,7 +26,7 @@ public class DottoreServiceImpl implements DottoreService {
 	@Override
 	@Transactional(readOnly = true)
 	public Dottore findById(Long id) {
-		return repository.findById(null).orElse(null);
+		return repository.findById(id).orElse(null);
 	}
 
 	@Override
@@ -36,12 +36,12 @@ public class DottoreServiceImpl implements DottoreService {
 			throw new IdNotNullForInsertException("Non puoi inserire un dottore con un id associato.");
 		}
 		
-		return repository.save(null);
+		return repository.save(input);
 	}
 
 	@Override
 	public Dottore aggiorna(Dottore input) {		
-		return repository.save(null);
+		return repository.save(input);
 	}
 
 	@Override
