@@ -3,16 +3,27 @@ package it.prova.dottori.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.NotBlank;
+
 import it.prova.dottori.model.Dottore;
 
 public class DottoreDTO {
 
 	private Long id;
+	
+	@NotBlank(message = "{nome.notblank}")
 	private String nome;
+	
+	@NotBlank(message = "{cognome.notblank}")
 	private String cognome;
+	
+	@NotBlank(message = "{codiceDottore.notblank}")
 	private String codiceDottore;
+	
 	private String codFiscalePazienteAttualmenteInVisita;
+	
 	private Boolean inVisita;
+	
 	private Boolean inServizio;
 
 	public DottoreDTO() {
