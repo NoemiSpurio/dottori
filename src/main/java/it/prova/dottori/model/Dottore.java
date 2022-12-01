@@ -50,6 +50,15 @@ public class Dottore {
 		this.inServizio = inServizio;
 	}
 
+	public Dottore(String nome, String cognome, String codiceDottore, Boolean inVisita, Boolean inServizio) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceDottore = codiceDottore;
+		this.inVisita = inVisita;
+		this.inServizio = inServizio;
+	}
+
 	public Long getId() {
 		return id;
 	}
