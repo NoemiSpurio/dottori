@@ -82,15 +82,16 @@ public class DottoreController {
 	}
 
 	@PostMapping("/impostaInVisita")
-	public String impostaInVisita(@RequestBody DottoreRequestDTO input) {
+	public DottoreRequestDTO impostaInVisita(@RequestBody DottoreRequestDTO input) {
 
 		Dottore dottoreInstance = dottoreService.findByCodice(input.getCodiceDottore());
 
 		if (dottoreInstance.getInVisita() || dottoreInstance.getCodFiscalePazienteAttualmenteInVisita() != null) {
 			throw new DottoreALavoroException("Dottore gia' in visita");
 		}
+		dottoreInstance.setCodFiscalePazienteAttualmenteInVisita(input.getCodiceFiscalePaziente());
 		dottoreService.impostaInVisita(dottoreInstance, dottoreInstance.getCodFiscalePazienteAttualmenteInVisita());
-		return dottoreInstance.getCodiceDottore();
+		return input;
 	}
 
 	@PostMapping("/terminaVisita")
