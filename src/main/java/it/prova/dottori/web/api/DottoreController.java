@@ -85,7 +85,7 @@ public class DottoreController {
 	public String impostaInVisita(@RequestBody DottoreRequestDTO input) {
 
 		Dottore dottoreInstance = dottoreService.findByCodice(input.getCodiceDottore());
-		
+
 		if (dottoreInstance.getInVisita() || dottoreInstance.getCodFiscalePazienteAttualmenteInVisita() != null) {
 			throw new DottoreALavoroException("Dottore gia' in visita");
 		}
@@ -105,5 +105,17 @@ public class DottoreController {
 		}
 
 		dottoreService.terminaVisita(dottoreInstance);
+	}
+
+	@GetMapping("/verifica/{codiceDottore}")
+	public DottoreRequestDTO verifica(@PathVariable(name = "codiceDottore", required = true) String codiceDottore) {
+
+		Dottore dottoreInstance = dottoreService.findByCodice(codiceDottore);
+
+		if (dottoreInstance.getInVisita() || dottoreInstance.getCodFiscalePazienteAttualmenteInVisita() != null) {
+			throw new DottoreALavoroException("Dottore gia' in visita");
+		}
+
+		return new DottoreRequestDTO(codiceDottore, null);
 	}
 }
