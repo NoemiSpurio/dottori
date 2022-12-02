@@ -55,4 +55,11 @@ public class DottoreServiceImpl implements DottoreService {
 		return repository.findByCodiceDottore(codice);
 	}
 
+	@Override
+	public void impostaInVisita(Dottore input, String codiceFiscalePaziente) {
+		input.setInVisita(true);
+		input.setCodFiscalePazienteAttualmenteInVisita(codiceFiscalePaziente);
+		repository.save(input);
+	}
+
 }

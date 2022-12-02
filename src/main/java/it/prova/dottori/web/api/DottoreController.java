@@ -78,4 +78,15 @@ public class DottoreController {
 	public DottoreDTO findByCOdiceDottore(@PathVariable(name = "codiceDottore", required = true) String codiceDottore) {
 		return DottoreDTO.buildDTORidottoFromDottoreModel(dottoreService.findByCodice(codiceDottore));
 	}
+	
+	@PostMapping("/impostaInVisita/{codiceDottore}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void impostaInVisita(@PathVariable(name = "codiceDottore", required = true) String codiceDottore, @RequestBody String codiceFiscalePaziente) {
+		
+		Dottore dottoreInstance = dottoreService.findByCodice(codiceDottore);
+		if (dottoreInstance.getInVisita() || dottoreInstance.getCodFiscalePazienteAttualmenteInVisita() != null) {
+			throw new DottoreALavoroException("Dottore gia' in visita");
+		}
+		dottoreService.impostaInVisita(dottoreInstance, codiceFiscalePaziente);
+	}
 }
