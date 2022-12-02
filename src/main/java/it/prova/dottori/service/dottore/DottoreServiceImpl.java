@@ -62,4 +62,11 @@ public class DottoreServiceImpl implements DottoreService {
 		repository.save(input);
 	}
 
+	@Override
+	public void terminaVisita(Dottore input) {
+		input.setCodFiscalePazienteAttualmenteInVisita(null);
+		input.setInVisita(false);
+		repository.save(input);
+	}
+
 }

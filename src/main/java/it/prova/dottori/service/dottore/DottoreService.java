@@ -19,4 +19,6 @@ public interface DottoreService {
 	Dottore findByCodice(String codice);
 	
 	void impostaInVisita(Dottore input, String codiceFiscalePaziente);
+	
+	void terminaVisita(Dottore input);
 }

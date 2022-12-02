@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.dottori.dto.DottoreDTO;
+import it.prova.dottori.dto.DottoreRequestDTO;
 import it.prova.dottori.model.Dottore;
 import it.prova.dottori.service.dottore.DottoreService;
 import it.prova.dottori.web.api.exception.DottoreALavoroException;
+import it.prova.dottori.web.api.exception.DottoreNonAssegnatoAlPazienteCorrettoException;
 import it.prova.dottori.web.api.exception.DottoreNotFoundException;
 
 @RestController
@@ -78,15 +80,30 @@ public class DottoreController {
 	public DottoreDTO findByCOdiceDottore(@PathVariable(name = "codiceDottore", required = true) String codiceDottore) {
 		return DottoreDTO.buildDTORidottoFromDottoreModel(dottoreService.findByCodice(codiceDottore));
 	}
-	
+
 	@PostMapping("/impostaInVisita/{codiceDottore}")
-	public String impostaInVisita(@PathVariable(name = "codiceDottore", required = true) String codiceDottore, @RequestBody String codiceFiscalePaziente) {
-		
+	public String impostaInVisita(@PathVariable(name = "codiceDottore", required = true) String codiceDottore,
+			@RequestBody String codiceFiscalePaziente) {
+
 		Dottore dottoreInstance = dottoreService.findByCodice(codiceDottore);
 		if (dottoreInstance.getInVisita() || dottoreInstance.getCodFiscalePazienteAttualmenteInVisita() != null) {
 			throw new DottoreALavoroException("Dottore gia' in visita");
 		}
 		dottoreService.impostaInVisita(dottoreInstance, codiceFiscalePaziente);
 		return codiceDottore;
+	}
+
+	@PostMapping("/terminaVisita")
+	public void terminaVisita(@RequestBody DottoreRequestDTO input) {
+
+		Dottore dottoreInstance = dottoreService.findByCodice(input.getCodiceDottore());
+
+		if (!dottoreInstance.getInVisita() || !dottoreInstance.getCodFiscalePazienteAttualmenteInVisita()
+				.equals(input.getCodiceFiscalePaziente())) {
+			throw new DottoreNonAssegnatoAlPazienteCorrettoException(
+					"Impossibile procedere: paziente e dottore non corrispondono");
+		}
+
+		dottoreService.terminaVisita(dottoreInstance);
 	}
 }
