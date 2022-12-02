@@ -80,13 +80,13 @@ public class DottoreController {
 	}
 	
 	@PostMapping("/impostaInVisita/{codiceDottore}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void impostaInVisita(@PathVariable(name = "codiceDottore", required = true) String codiceDottore, @RequestBody String codiceFiscalePaziente) {
+	public String impostaInVisita(@PathVariable(name = "codiceDottore", required = true) String codiceDottore, @RequestBody String codiceFiscalePaziente) {
 		
 		Dottore dottoreInstance = dottoreService.findByCodice(codiceDottore);
 		if (dottoreInstance.getInVisita() || dottoreInstance.getCodFiscalePazienteAttualmenteInVisita() != null) {
 			throw new DottoreALavoroException("Dottore gia' in visita");
 		}
 		dottoreService.impostaInVisita(dottoreInstance, codiceFiscalePaziente);
+		return codiceDottore;
 	}
 }
